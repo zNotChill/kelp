@@ -1,6 +1,6 @@
-package me.znotchill.database.column.types
+package me.znotchill.kelp.column.types
 
-import me.znotchill.database.column.ColumnType
+import me.znotchill.kelp.column.ColumnType
 
 object StringColumnType : ColumnType<String> {
     override val sqlType = "TEXT"

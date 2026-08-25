@@ -1,10 +1,10 @@
-package me.znotchill.database
+package me.znotchill.kelp
 
 import io.github.smyrgeorge.sqlx4k.Driver
 import io.github.smyrgeorge.sqlx4k.SQLError
 import io.github.smyrgeorge.sqlx4k.Statement
 import io.github.smyrgeorge.sqlx4k.Transaction
-import me.znotchill.database.exceptions.AlreadyExistsException
+import me.znotchill.kelp.exceptions.AlreadyExistsException
 
 class Database(
     val driver: Driver

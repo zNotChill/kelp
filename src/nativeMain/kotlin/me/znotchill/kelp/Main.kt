@@ -1,9 +1,11 @@
-package me.znotchill.database
+package me.znotchill.kelp
 
 import io.github.smyrgeorge.sqlx4k.postgres.PostgreSQL
 import kotlinx.coroutines.runBlocking
-import me.znotchill.database.UserModel.where
-import me.znotchill.database.conditions.eq
+import me.znotchill.kelp.UserModel.where
+import me.znotchill.kelp.conditions.and
+import me.znotchill.kelp.conditions.between
+import me.znotchill.kelp.conditions.neq
 
 fun main() = runBlocking {
     val db = Database(
@@ -28,7 +30,7 @@ fun main() = runBlocking {
     )
     UserModel.insert(db, user)
     val test = UserModel.where(db) {
-        age eq 67
+        (age between 67..67) and (age neq 67)
     }
 
     println(test)

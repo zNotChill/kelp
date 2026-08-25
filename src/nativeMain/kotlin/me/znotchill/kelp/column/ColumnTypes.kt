@@ -1,7 +1,7 @@
-package me.znotchill.database.column
+package me.znotchill.kelp.column
 
-import me.znotchill.database.column.types.IntColumnType
-import me.znotchill.database.column.types.StringColumnType
+import me.znotchill.kelp.column.types.IntColumnType
+import me.znotchill.kelp.column.types.StringColumnType
 import kotlin.reflect.KClass
 
 object ColumnTypes {

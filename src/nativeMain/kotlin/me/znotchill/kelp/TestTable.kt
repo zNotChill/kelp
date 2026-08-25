@@ -1,4 +1,4 @@
-package me.znotchill.database
+package me.znotchill.kelp
 
 data class User(
     val id: String,

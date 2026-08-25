@@ -1,4 +1,4 @@
-package me.znotchill.database.column
+package me.znotchill.kelp.column
 
 interface ColumnType<T> {
     val sqlType: String

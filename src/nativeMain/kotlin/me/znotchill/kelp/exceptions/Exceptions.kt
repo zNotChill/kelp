@@ -1,4 +1,4 @@
-package me.znotchill.database.exceptions
+package me.znotchill.kelp.exceptions
 
 class AlreadyExistsException(message: String) : Exception(message)
 class InvalidTableNameException(message: String) : Exception(message)

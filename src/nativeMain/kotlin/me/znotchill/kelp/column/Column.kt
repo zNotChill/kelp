@@ -1,4 +1,4 @@
-package me.znotchill.database.column
+package me.znotchill.kelp.column
 
 open class Column<T>(
     val name: String,

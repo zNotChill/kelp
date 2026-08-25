@@ -1,13 +1,13 @@
-package me.znotchill.database
+package me.znotchill.kelp
 
 import io.github.smyrgeorge.sqlx4k.Statement
-import me.znotchill.database.column.Column
-import me.znotchill.database.column.ColumnType
-import me.znotchill.database.column.ColumnTypes
-import me.znotchill.database.column.nullable
-import me.znotchill.database.conditions.Condition
-import me.znotchill.database.conditions.render
-import me.znotchill.database.exceptions.InvalidTableNameException
+import me.znotchill.kelp.column.Column
+import me.znotchill.kelp.column.ColumnType
+import me.znotchill.kelp.column.ColumnTypes
+import me.znotchill.kelp.column.nullable
+import me.znotchill.kelp.conditions.Condition
+import me.znotchill.kelp.conditions.render
+import me.znotchill.kelp.exceptions.InvalidTableNameException
 
 open class Model<T>(
     val tableName: String,
