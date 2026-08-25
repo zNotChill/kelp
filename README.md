@@ -1,29 +1,70 @@
-# MyApplication
 
-This is a Kotlin Multiplatform project targeting Desktop (JVM).
+# Kelp
 
-* [/composeApp](src/src) is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-    - [commonMain](src/src/commonMain/kotlin) is for code that's common for all targets.
-    - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-      For example, if you want to use Apple's CoreCrypto for the iOS part of your Kotlin app,
-      the [iosMain](src/src/iosMain/kotlin) folder would be the right place for such calls.
-      Similarly, if you want to edit the Desktop (JVM) specific part, the [jvmMain](src/src/jvmMain/kotlin)
-      folder is the appropriate location.
+my version of exposed but for full multiplatform support :) (WIP)
 
-### Build and Run Desktop (JVM) Application
+not really that similar to exposed, but it goes with a design that I personally like
+way more than exposed
 
-To build and run the development version of the desktop app, use the run configuration from the run widget
-in your IDE's toolbar or run it directly from the terminal:
-- on macOS/Linux
-  ```shell
-  ./gradlew :composeApp:run
-  ```
-- on Windows
-  ```shell
-  .\gradlew.bat :composeApp:run
-  ```
+realistically, this is probably a lot worse than exposed, but I made this for people
+like me who need a multiplatform database system 
 
----
+# Install
 
-Learn more about [Compose Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-multiplatform.html).# database
+not published yet
+
+# Quick start
+
+## Connecting
+```kt
+val db = Database(
+    PostgreSQL(
+        url = "postgresql://localhost:5432/mydb",
+        username = "user",
+        password = "password"
+    )
+)
+```
+
+## Table models
+```kt
+data class User(
+    val id: String,
+    val name: String,
+    val age: Int?
+)
+
+object UserModel : Model<User>("users") {
+    val id = column("id") { it.id }
+    val name = column("name") { it.name }
+    val age = nullable("age") { it.age }
+
+    override fun decode(row: Row): User =
+        User(
+            id = row[id],
+            name = row[name],
+            age = row[age]
+        )
+}
+```
+
+## Table management
+```kt
+try {
+    db.dropTable(UserModel)
+    db.createTable(UserModel)
+} catch (e: Exception) {
+    e.printStackTrace()
+}
+```
+
+## Row management
+```kt
+val user = User(id = "hi", name = "hello", age = 67)
+db.insert(db, user)
+```
+```kt
+val results = UserModel.where(db) {
+    (age between 18..65) and (name eq "hello")
+}
+```

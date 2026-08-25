@@ -20,7 +20,7 @@ kotlin {
     targets.withType<KotlinNativeTarget>().configureEach {
         binaries {
             executable {
-                entryPoint = "me.znotchill.database.main"
+                entryPoint = "me.znotchill.kelp.main"
                 linkerOpts("-L/usr/lib", "-Wl,--allow-shlib-undefined")
             }
         }
