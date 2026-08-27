@@ -1,5 +1,11 @@
 
-# Kelp
+
+<p align="center">
+    <picture>
+        <img src="assets/kelp-logomark.svg" alt="Kelp Logomark" width="776">
+    </picture>
+</p>
+
 
 my version of exposed but for full multiplatform support :) (WIP)
 
@@ -22,7 +28,8 @@ val db = Database(
         url = "postgresql://localhost:5432/mydb",
         username = "user",
         password = "password"
-    )
+    ),
+    PostgresDialect
 )
 ```
 
