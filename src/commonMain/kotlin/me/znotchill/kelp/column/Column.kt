@@ -1,5 +1,7 @@
 package me.znotchill.kelp.column
 
+import me.znotchill.kelp.Database
+
 open class Column<T>(
     val name: String,
     val type: ColumnType<T>,
@@ -18,10 +20,10 @@ open class Column<T>(
         return this
     }
 
-    fun statement(): String = buildString {
+    fun statement(db: Database): String = buildString {
         append(name)
         append(" ")
-        append(type.sqlType)
+        append(type.sqlType(db.dialect))
 
         if (!nullable) {
             append(" NOT NULL")

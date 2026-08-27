@@ -39,7 +39,10 @@ open class Model<T>(
         return column
     }
 
-    fun insertStatement(data: T): Statement {
+    fun insertStatement(
+        db: Database,
+        data: T
+    ): Statement {
         val columnString = columns.map {
             it.name
         }.joinToString { it }
@@ -55,7 +58,7 @@ open class Model<T>(
             @Suppress("UNCHECKED_CAST")
             val typedColumn = column as Column<Any?>
             val rawValue = extractors.getValue(column.name)(data)
-            val dbValue = typedColumn.type.toDatabase(rawValue)
+            val dbValue = typedColumn.type.toDatabase(rawValue, db.dialect)
             statement = statement.bind("col_${column.name}", dbValue)
         }
 
@@ -80,15 +83,15 @@ open class Model<T>(
             val entries = mutableMapOf<String, Any?>()
             columns.forEach { col ->
                 val colValue = row.get(col.name)
-                entries[col.name] = col.type.fromDatabase(colValue.asString())
+                entries[col.name] = col.type.fromDatabase(colValue.asString(), db.dialect)
             }
-            decode(Row(entries))
+            decode(Row(entries, db))
         }
         return rowMap
     }
 
     suspend fun insert(db: Database, data: T) {
-        db.driver.execute(insertStatement(data)).getOrThrow()
+        db.driver.execute(insertStatement(db, data)).getOrThrow()
     }
 
     inline fun <reified V : Any> Model<T>.column(
@@ -107,13 +110,13 @@ open class Model<T>(
         return registerColumn(name, type, nullable = true, extractor)
     }
 
-    fun createStatement(): String = buildString {
+    fun createStatement(db: Database): String = buildString {
         append("CREATE TABLE ")
         append(tableName)
         append(" (")
 
         columns.joinTo(this, separator = ", ") { column ->
-            column.statement()
+            column.statement(db)
         }
 
         append(")")

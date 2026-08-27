@@ -4,10 +4,12 @@ import io.github.smyrgeorge.sqlx4k.Driver
 import io.github.smyrgeorge.sqlx4k.SQLError
 import io.github.smyrgeorge.sqlx4k.Statement
 import io.github.smyrgeorge.sqlx4k.Transaction
+import me.znotchill.kelp.dialects.Dialect
 import me.znotchill.kelp.exceptions.AlreadyExistsException
 
 class Database(
-    val driver: Driver
+    val driver: Driver,
+    val dialect: Dialect
 ) {
     suspend fun execute(statement: Statement): Result<Long> {
         println("Executing $statement")
@@ -31,7 +33,7 @@ class Database(
     }
 
     suspend fun createTable(table: Model<*>) {
-        tryExecute(table.createStatement())
+        tryExecute(table.createStatement(this))
     }
 
     suspend fun dropTable(table: Model<*>) {

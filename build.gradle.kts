@@ -27,10 +27,13 @@ kotlin {
     }
 
     sourceSets {
-        nativeMain.dependencies {
+        commonMain.dependencies {
             implementation("me.znotchill.kiwi:core:1.0.0")
-            implementation("io.github.smyrgeorge:sqlx4k-postgres:1.13.0")
-            implementation("io.github.smyrgeorge:sqlx4k:1.13.0")
+
+            compileOnly("io.github.smyrgeorge:sqlx4k:1.13.0")
+            compileOnly("io.github.smyrgeorge:sqlx4k-postgres:1.13.0")
+            compileOnly("io.github.smyrgeorge:sqlx4k-mysql:1.13.0")
+            compileOnly("io.github.smyrgeorge:sqlx4k-sqlite:1.13.0")
         }
     }
 }

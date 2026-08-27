@@ -6,6 +6,7 @@ import me.znotchill.kelp.UserModel.where
 import me.znotchill.kelp.conditions.and
 import me.znotchill.kelp.conditions.between
 import me.znotchill.kelp.conditions.neq
+import me.znotchill.kelp.dialects.PostgresDialect
 
 fun main() = runBlocking {
     val db = Database(
@@ -13,7 +14,8 @@ fun main() = runBlocking {
             url = "postgresql://localhost:5432/mydb",
             username = "user",
             password = "password"
-        )
+        ),
+        PostgresDialect
     )
 
     try {
