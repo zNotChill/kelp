@@ -8,6 +8,7 @@ import me.znotchill.kelp.column.ColumnType
 import me.znotchill.kelp.column.ColumnTypes
 import me.znotchill.kelp.column.nullable
 import me.znotchill.kelp.column.types.EnumColumnType
+import me.znotchill.kelp.column.types.JsonColumnType
 import me.znotchill.kelp.column.types.ListColumnType
 import me.znotchill.kelp.conditions.Condition
 import me.znotchill.kelp.conditions.render
@@ -176,6 +177,19 @@ open class Model<T>(
         return registerColumn(
             name,
             EnumColumnType(serializer, enumValues<E>()),
+            nullable = false,
+            extractor
+        )
+    }
+
+    inline fun <V> json(
+        name: String,
+        serializer: KSerializer<V>,
+        noinline extractor: (T) -> V
+    ): Column<V> {
+        return registerColumn(
+            name,
+            JsonColumnType(serializer),
             nullable = false,
             extractor
         )
