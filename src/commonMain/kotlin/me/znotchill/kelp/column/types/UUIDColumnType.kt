@@ -1,13 +1,17 @@
 package me.znotchill.kelp.column.types
 
+import kotlinx.serialization.builtins.serializer
 import kotlin.uuid.Uuid
 import me.znotchill.kelp.column.ColumnType
 import me.znotchill.kelp.dialects.Dialect
 import me.znotchill.kelp.dialects.MySqlDialect
 import me.znotchill.kelp.dialects.PostgresDialect
 import me.znotchill.kelp.dialects.SqliteDialect
+import kotlin.uuid.ExperimentalUuidApi
 
 object UUIDColumnType : ColumnType<Uuid> {
+    @OptIn(ExperimentalUuidApi::class)
+    override val serializer = Uuid.serializer()
 
     override fun sqlType(dialect: Dialect): String =
         when (dialect) {

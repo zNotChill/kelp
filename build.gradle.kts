@@ -2,11 +2,16 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
+    alias(libs.plugins.vanniktech.mavenPublish)
     alias(libs.plugins.kotlinxSerialization)
 }
 
 group = "me.znotchill"
 version = "1.0.0"
+
+mavenPublishing {
+    coordinates(group.toString(), "kelp", version.toString())
+}
 
 repositories {
     mavenLocal()
@@ -37,3 +42,4 @@ kotlin {
         }
     }
 }
+

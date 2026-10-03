@@ -86,3 +86,17 @@ class Between<T : Comparable<T>>(
         return sql to listOf(low, high)
     }
 }
+
+class IsLatest(
+    private val column: Column<*>
+) : Condition() {
+    override fun toSql(paramIndex: () -> Int): Pair<String, List<Any?>> {
+        return "${column.name} = (SELECT MAX(${column.name}) FROM ${column.model.tableName})" to emptyList()
+    }
+}
+
+val <T> Column<T>.isLatest: Condition
+    get() = IsLatest(this)
+
+infix fun Column<String>.contains(value: String): Condition =
+    Comparison(this, "LIKE", "%$value%")

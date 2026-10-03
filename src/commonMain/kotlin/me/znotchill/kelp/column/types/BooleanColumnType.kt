@@ -1,5 +1,7 @@
 package me.znotchill.kelp.column.types
 
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.builtins.serializer
 import me.znotchill.kelp.column.ColumnType
 import me.znotchill.kelp.dialects.Dialect
 import me.znotchill.kelp.dialects.MySqlDialect
@@ -7,6 +9,7 @@ import me.znotchill.kelp.dialects.PostgresDialect
 import me.znotchill.kelp.dialects.SqliteDialect
 
 object BooleanColumnType : ColumnType<Boolean> {
+    override val serializer = Boolean.serializer()
     override fun sqlType(dialect: Dialect): String = when (dialect) {
         is PostgresDialect -> "BOOLEAN"
         is MySqlDialect -> "BOOLEAN"

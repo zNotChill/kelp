@@ -5,6 +5,7 @@ import kotlinx.coroutines.runBlocking
 import me.znotchill.kelp.UserModel.where
 import me.znotchill.kelp.conditions.and
 import me.znotchill.kelp.conditions.between
+import me.znotchill.kelp.conditions.isLatest
 import me.znotchill.kelp.conditions.neq
 import me.znotchill.kelp.dialects.PostgresDialect
 
@@ -28,11 +29,12 @@ fun main() = runBlocking {
     val user = User(
         id = "hi",
         name = "hello",
-        age = 67
+        age = 67,
+        joinDate = 0
     )
     UserModel.insert(db, user)
     val test = UserModel.where(db) {
-        (age between 67..67) and (age neq 67)
+        joinDate.isLatest
     }
 
     println(test)

@@ -1,8 +1,10 @@
 package me.znotchill.kelp.column
 
 import me.znotchill.kelp.Database
+import me.znotchill.kelp.Model
 
 open class Column<T>(
+    val model: Model<*>,
     val name: String,
     val type: ColumnType<T>,
     var nullable: Boolean = false,
