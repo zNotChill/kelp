@@ -13,6 +13,7 @@ import me.znotchill.kelp.column.types.ListColumnType
 import me.znotchill.kelp.conditions.Condition
 import me.znotchill.kelp.conditions.render
 import me.znotchill.kelp.exceptions.InvalidTableNameException
+import me.znotchill.kelp.migration.MigrationResult
 
 open class Model<T>(
     val tableName: String,
@@ -252,4 +253,44 @@ open class Model<T>(
         append(tableName)
         append(";")
     }
+
+    suspend fun existingColumnNames(db: Database): Set<String> {
+        val rows = db.driver
+            .fetchAll(
+                Statement.create(db.dialect.existingColumnsSql(tableName))
+            )
+            .getOrThrow()
+        return rows.rows.map { it.get("name").asString().lowercase() }.toSet()
+    }
+
+    fun addColumnStatement(db: Database, column: Column<*>): String =
+        "ALTER TABLE $tableName ADD COLUMN ${column.statement(db)};"
+
+    suspend fun migrate(db: Database): MigrationResult {
+        val existing = existingColumnNames(db)
+
+        if (existing.isEmpty()) {
+            db.driver.execute(Statement.create(createStatement(db) + ";")).getOrThrow()
+            return MigrationResult(created = true, addedColumns = columns.map { it.name }, extraColumns = emptyList())
+        }
+
+        val missing = columns.filter { it.name.lowercase() !in existing }
+
+        missing.forEach { column ->
+            require(column.nullable) {
+                "Cannot add non-nullable column '${column.name}' to table '$tableName'."
+            }
+            db.driver.execute(Statement.create(addColumnStatement(db, column))).getOrThrow()
+        }
+
+        val modelNames = columns.map { it.name.lowercase() }.toSet()
+        return MigrationResult(
+            created = false,
+            addedColumns = missing.map { it.name },
+            extraColumns = existing.filter { it !in modelNames },
+        )
+    }
+
+    suspend fun Database.migrate(vararg models: Model<*>): List<MigrationResult> =
+        models.map { it.migrate(this) }
 }
