@@ -56,9 +56,6 @@ infix fun <T> Column<T>.neq(value: T): Condition = Comparison(this, "!=", value)
 infix fun <T> Column<T>.lt(value: T): Condition = Comparison(this, "<", value)
 infix fun <T> Column<T>.lte(value: T): Condition = Comparison(this, "<=", value)
 infix fun <T> Column<T>.gte(value: T): Condition = Comparison(this, ">=", value)
-infix fun <T : Comparable<T>> Column<T>.between(range: ClosedRange<T>): Condition =
-    Between(this, range.start, range.endInclusive)
-
 infix fun <T : Comparable<T>> Column<T?>.between(range: ClosedRange<T>): Condition =
     Between(this, range.start, range.endInclusive)
 infix fun Condition.and(other: Condition): Condition = And(this, other)
