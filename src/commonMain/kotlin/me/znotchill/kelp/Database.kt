@@ -12,7 +12,6 @@ class Database(
     val dialect: Dialect
 ) {
     suspend fun execute(statement: Statement): Result<Long> {
-        println("Executing $statement")
         return driver.execute(statement)
     }
 
